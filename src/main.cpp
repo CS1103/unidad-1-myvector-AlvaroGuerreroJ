@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -6,11 +7,12 @@
 
 using std::cout;
 using std::endl;
+using std::out_of_range;
 using std::string;
 using std::vector;
 
 template<class T>
-void print_vector(const MyVector<T>& vec);
+void print_vector(const T& vec);
 
 int main()
 {
@@ -19,44 +21,121 @@ int main()
     // cout << "nums0:" << endl;
     // print_vector(nums0);
 
-    MyVector<int> nums1;
-    nums1.push_back(10);
-    nums1.push_back(20);
-    nums1.push_back(30);
-    cout << "nums1:" << endl;
-    print_vector(nums1);
+    MyVector<unsigned> vun0 = {1, 4, 9, 16, 25};
+    print_vector(vun0);
+    vun0.push_back(99);
+    print_vector(vun0);
+    cout << endl << endl;
 
-    MyVector<int> nums2 = {1, 4, 9, 16, 25, 36};
-    cout << "nums2:" << endl;
-    print_vector(nums2);
+    cout << "vun0.front(): " << vun0.front() << endl;
+    cout << "vun0.cfront(): " << vun0.cfront() << endl;
+    cout << "vun0.back(): " << vun0.back() << endl;
+    cout << "vun0.cback(): " << vun0.cback() << endl;
+    cout << endl << endl;
 
-    MyVector<int> nums3 = nums1 + nums2;
-    cout << "nums3:" << endl;
-    print_vector(nums3);
+    cout << "vun0 is " << (vun0.empty() ? "is empty" : "is not empty") << endl;
+    auto vun1 = vun0;
+    auto vun2 = vun0 + vun0;
+    vun0.clear();
+    cout << "vun0 is " << (vun0.empty() ? "is empty" : "is not empty") << endl;
+    cout << endl << endl;
 
-    MyVector<int> nums4(nums1);
-    cout << "nums4:" << endl;
-    print_vector(nums4);
+    cout << "vun1:" << endl;
+    print_vector(vun1);
+    cout << endl << endl;
 
-    MyVector<int> nums5(nums1 + nums2);
-    cout << "nums5:" << endl;
-    print_vector(nums5);
+    cout << "vun2:" << endl;
+    print_vector(vun2);
+    cout << endl << endl;
 
-    nums5 = nums1;
-    cout << "nums5:" << endl;
-    print_vector(nums5);
+    cout << "vun1:" << endl;
+    for (MyVector<unsigned>::iterator it = vun1.begin(); it != vun1.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl << endl << endl;
 
-    vector<string> v = {"hello", "world"};
-    MyVector<string> words0(v.begin(), v.end());
-    cout << "words0:" << endl;
-    print_vector(words0);
+    cout << "vun1's size: " << vun1.size() << endl;
+    cout << "vun1's capacity: " << vun1.capacity() << endl;
+    cout << endl;
+
+    vun1.resize(10);
+    cout << "executed vun1.resize(10)" << endl;
+    cout << endl;
+
+    cout << "vun1's size: " << vun1.size() << endl;
+    cout << "vun1's capacity: " << vun1.capacity() << endl;
+    cout << endl;
+
+    vun1.reserve(100);
+    cout << "executed vun1.reserve(100)" << endl;
+    cout << endl;
+
+    cout << "vun1's size: " << vun1.size() << endl;
+    cout << "vun1's capacity: " << vun1.capacity() << endl;
+    cout << endl;
+
+    vun1.resize(1200);
+    cout << "executed vun1.resize(1200)" << endl;
+    cout << endl;
+
+    cout << "vun1's size: " << vun1.size() << endl;
+    cout << "vun1's capacity: " << vun1.capacity() << endl;
+    cout << endl;
+
+    MyVector<string> vst0(3, "hello");
+
+    cout << "vst0:" << endl;
+    print_vector(vst0);
+    cout << endl << endl;
+
+    MyVector<string> vst1{"something", "here"};
+
+    vst0.insert(vst0.begin(), vst1.begin(), vst1.end());
+
+    cout << "vst0:" << endl;
+    print_vector(vst0);
+    cout << endl << endl;
+
+    vst0.insert(vst0.end(), vst1.begin(), vst1.end());
+
+    cout << "vst0:" << endl;
+    print_vector(vst0);
+    cout << endl << endl;
+
+    vst0.insert(vst0.begin(), "start");
+
+    cout << "vst0:" << endl;
+    print_vector(vst0);
+    cout << endl << endl;
+
+    vst0.insert(vst0.cend(), 3, "mult");
+
+    cout << "vst0:" << endl;
+    print_vector(vst0);
+    cout << endl << endl;
+
+    cout << vst0[0] << endl;
+    cout << vst0.at(0) << endl;
+
+    try
+    {
+        cout << vst0.at(999999) << endl;
+    }
+    catch (const out_of_range& e)
+    {
+        cout << "Got you" << endl;
+        cout << e.what() << endl;
+    }
+    cout << endl << endl;
 }
 
 template<class T>
-void print_vector(const MyVector<T>& vec)
+void print_vector(const T& vec)
 {
-    for (typename MyVector<T>::size_type i = 0; i < vec.size(); i++)
+    for (const auto& e : vec)
     {
-        cout << vec[i] << endl;
+        cout << e << " ";
     }
+    cout << endl;
 }
