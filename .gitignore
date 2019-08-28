@@ -1,0 +1,9 @@
+# Out files
+*.out
+*.exe
+
+# Build
+/build
+
+# VS Code
+/.vscode
