@@ -327,7 +327,7 @@ typename MyVector<T>::iterator MyVector<T>::insert(const_iterator pos,
 
         m_size = new_size;
         
-        return iterator(mpos);
+        return mpos;
     }
     // If there's not enough space, create a new array and copy the elements in
     // the current object til the indicated position, insert the elements in
@@ -372,20 +372,32 @@ template<class T>
 typename MyVector<T>::iterator MyVector<T>::insert(const_iterator pos,
                                                    std::initializer_list<T> ilist)
 {
-    this->insert(ilist.begin(), ilist.end());
+    // TODO: Must be tested
+    return this->insert(ilist.begin(), ilist.end());
 }
 
 template<class T>
 typename MyVector<T>::iterator MyVector<T>::erase(const_iterator pos)
 {
-    // TODO
+    return erase(pos, pos + 1);
 }
 
 template<class T>
 typename MyVector<T>::iterator MyVector<T>::erase(const_iterator first,
                                                   const_iterator last)
 {
-    // TODO
+    size_type new_size = m_size - std::distance(first, last);
+    for (iterator replacee = first, replacing = last;
+         replacing != this->end(); replacee++, replacing++)
+    {
+        *replacee = *replacing;
+    }
+
+    iterator ret = this->begin();
+    std::advance(ret, std::distance(ret, first));
+    m_size = new_size;
+
+    return ret;
 }
 
 template<class T>

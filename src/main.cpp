@@ -1,3 +1,4 @@
+#include <initializer_list>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -7,6 +8,7 @@
 
 using std::cout;
 using std::endl;
+using std::initializer_list;
 using std::out_of_range;
 using std::string;
 using std::vector;
@@ -127,6 +129,19 @@ int main()
         cout << "Got you" << endl;
         cout << e.what() << endl;
     }
+    cout << endl << endl;
+
+    vector<double> vdo0({2.5, 7.75, 0.888888});
+
+    cout << "vdo0:" << endl;
+    print_vector(vdo0);
+    cout << endl << endl;
+
+    initializer_list<double> temp = {-.1, -.1, -.1};
+    vdo0.insert(vdo0.cbegin() + 1, temp);
+
+    cout << "vdo0:" << endl;
+    print_vector(vdo0);
     cout << endl << endl;
 }
 
